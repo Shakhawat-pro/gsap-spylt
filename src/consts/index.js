@@ -24,11 +24,11 @@ const flavorlists = [
     color: "white",
     rotation: "md:rotate-[-8deg] rotate-0",
   },
-  // {
-  //   name: "Max Chocolate Milk",
-  //   color: "black",
-  //   rotation: "md:rotate-[8deg] rotate-0",
-  // },
+  {
+    name: "Max Chocolate Milk",
+    color: "black",
+    rotation: "md:rotate-[8deg] rotate-0",
+  },
 ];
 
 const nutrientLists = [

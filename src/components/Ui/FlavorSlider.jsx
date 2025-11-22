@@ -2,34 +2,42 @@
 import { flavorlists } from "@/consts";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useRef } from "react";
 import { useMediaQuery } from "react-responsive";
 import Image from "next/image";
+gsap.registerPlugin(ScrollTrigger);
 
 const FlavorSlider = () => {
-  const sliderRef = useRef();
+  const flavorsRef = useRef();
 
   const isTablet = useMediaQuery({
     query: "(max-width: 1024px)",
   });
 
   useGSAP(() => {
-    const scrollAmount = sliderRef.current.scrollWidth - window.innerWidth;
+
+    const getScrollAmount = () => {
+      if (!flavorsRef.current) return 0;
+      return flavorsRef.current.scrollWidth - window.innerWidth;
+    };
 
     if (!isTablet) {
-      const tl = gsap.timeline({
+
+      gsap.set(flavorsRef.current, { willChange: "transform" });
+
+      gsap.to([flavorsRef.current, ".flavor-title-wrapper"], {
+        x: () => -getScrollAmount(),
+        ease: "none",
         scrollTrigger: {
           trigger: ".flavor-section",
-          start: "2% top",
-          end: `+=${scrollAmount + 1500}px`,
+          start: "top top",
+          end: () => "+=" + getScrollAmount(),
           scrub: true,
           pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
         },
-      });
-
-      tl.to(".flavor-section", {
-        x: `-${scrollAmount + 1500}px`,
-        ease: "power1.inOut",
       });
     }
 
@@ -39,35 +47,21 @@ const FlavorSlider = () => {
         start: "top top",
         end: "bottom 80%",
         scrub: true,
+        invalidateOnRefresh: true,
       },
     });
 
     titleTl
-      .to(".first-text-split", {
-        xPercent: -30,
-        ease: "power1.inOut",
-      })
-      .to(
-        ".flavor-text-scroll",
-        {
-          xPercent: -22,
-          ease: "power1.inOut",
-        },
-        "<"
-      )
-      .to(
-        ".second-text-split",
-        {
-          xPercent: -10,
-          ease: "power1.inOut",
-        },
-        "<"
-      );
+      .to(".first-text-split", { xPercent: -30, ease: "none" })
+      .to(".flavor-text-scroll", { xPercent: -22, ease: "none" }, "<")
+      .to(".second-text-split", { xPercent: -10, ease: "none" }, "<");
+
+ 
   });
 
   return (
-    <div ref={sliderRef} className="slider-wrapper">
-      <div className="flavors">
+    <div className="slider-wrapper">
+      <div ref={flavorsRef} className="flavors">
         {flavorlists.map((flavor) => (
           <div
             key={flavor.name}
