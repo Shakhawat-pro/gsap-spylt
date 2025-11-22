@@ -1,5 +1,6 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Antonio } from "next/font/google";
 import "./globals.css";
+import GsapPlugins from "@/utils/GsapPlugins";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -8,6 +9,11 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const antonio = Antonio({
+  variable: "--font-sans",
   subsets: ["latin"],
 });
 
@@ -20,8 +26,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${antonio.variable}  antialiased`}
       >
+        <GsapPlugins />
         {children}
       </body>
     </html>
