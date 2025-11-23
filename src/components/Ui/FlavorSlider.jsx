@@ -19,7 +19,7 @@ const FlavorSlider = () => {
 
     const getScrollAmount = () => {
       if (!flavorsRef.current) return 0;
-      return flavorsRef.current.scrollWidth - window.innerWidth;
+      return flavorsRef.current.scrollWidth - window.innerWidth + 1000;
     };
 
     if (!isTablet) {
